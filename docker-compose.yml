@@ -78,6 +78,33 @@ services:
     expose:
       - 8081
 
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    mem_limit: 1024m
+    environment:
+      - "JAVA_OPTS=-XX:+UnlockExperimentalVMOptions"
+      - "JAVA_OPTS=-XX:+UseCGroupMemoryLimitForHeap"
+    network_mode: "host"
+    container_name: zookeeper
+    hostname: localhost
+    restart: always
+    healthcheck:
+     test: "exit 0"
 
+  document-provider:
+    image: document-provider:latest
+    build: document-provider/
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    depends_on:
+      -
+      - eurekaserver
+    ports:
+      - 8083:8083
+    expose:
+      - 8083
 
 

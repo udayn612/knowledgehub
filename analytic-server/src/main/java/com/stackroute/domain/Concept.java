@@ -12,6 +12,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 @AllArgsConstructor
 public class Concept {
 
+
+
     @Id
     private int Id;
     private String name;

@@ -38,9 +38,9 @@ public class KafkaConsumer {
         JSONObject object = (JSONObject) JSONValue.parse(message);
 
         Paragraph paragraph = new Paragraph(object.get("paragraphId").toString(), object.get("paragraphText").toString(), object.get("documentId").toString());
-        System.out.println(paragraph.getDocumentId());
-        System.out.println(paragraph.getParagraphId());
-        System.out.println(paragraph.getParagraphContent());
+        System.out.println("aaaaaaaaaaaaaaaa"+paragraph.getDocumentId());
+        System.out.println("bbbbbbbbbbbbbbbbb"+paragraph.getParagraphId());
+        System.out.println("cccccccccccccccccc"+paragraph.getParagraphContent());
         paragraphService.takeParagraph(paragraph);
         paragraphProviderService.setParagraph(paragraph);
         kafkaProducer.postservice();
