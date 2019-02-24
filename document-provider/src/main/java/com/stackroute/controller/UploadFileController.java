@@ -62,15 +62,22 @@ public class UploadFileController {
     public FileUrl uploadFile(@RequestPart(value = "file") MultipartFile file)
     {
         String url="https://s3."+ awsRegion+".amazonaws.com/"+awsS3AudioBucket+"/"+file.getOriginalFilename();
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        System.out.println(url);
+        System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         fileUrl = new FileUrl();
         fileUrl.setFileUrl(url);
+        System.out.println("ccccccccccccccccccccccccccccccccccccc");
+        System.out.println(fileUrl.getFileUrl());
+        System.out.println("ddddddddddddddddddddddddddddddddddd");
+
         this.amazonS3ClientService.uploadFileToS3Bucket(file, true);
 
         ResponseEntity responseEntity;
         responseEntity = new ResponseEntity(fileUrl, HttpStatus.OK);
 //        Map<String,String> response = new HashMap<>();
 //        response.put("url", "https://s3."+region+".amazonaws.com/"+bucketName+"/"+file.getOriginalFilename());
-        kafkaTemplate.send(TOPIC,fileUrl);
+         kafkaTemplate.send(TOPIC,fileUrl);
         return fileUrl;
     }
 

@@ -2,7 +2,7 @@ knowledgehub:
     jwtExpiration: 86400
     jwtSecret: jwtSecretKey
 server:
-    port: 8083
+    port: 8084
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver

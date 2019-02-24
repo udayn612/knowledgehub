@@ -97,14 +97,16 @@ public class PdfExtractionServiceImpl implements PdfExtractionService {
         return jsonString;
     }
 
+
+
     /*
     This method will extract Pdf from URL
      */
-    public  PdfDocument extractFromURL() throws IOException , SAXException, NullPointerException, FileNotFoundException, EmptyFileException,
+    public  PdfDocument extractFromURL(String path1) throws IOException , SAXException, NullPointerException, FileNotFoundException, EmptyFileException,
             TikaException
     {
-        System.out.println(path);
-        URL url=new URL(path);
+        System.out.println(path1);
+        URL url=new URL(path1);
         TikaInputStream tikaInputStream =TikaInputStream.get(url.openStream());
         BodyContentHandler contenthandler = new BodyContentHandler(10*1024*1024);
         Metadata metadata = new Metadata();
@@ -131,6 +133,7 @@ public class PdfExtractionServiceImpl implements PdfExtractionService {
         ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String jsonString = objectWriter.writeValueAsString(pdfDocument);
        // kafkaTemplate.send(TOPIC, pdfDocument);
+        System.out.println("extracted properly");
         return pdfDocument;
     }
 

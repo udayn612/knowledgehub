@@ -16,7 +16,7 @@ public interface PdfExtractionService {
             TikaException,FileNotFoundException, EmptyFileException;
 
 
-    public PdfDocument extractFromURL() throws IOException , SAXException, NullPointerException, FileNotFoundException, EmptyFileException,
+    public PdfDocument extractFromURL(String path) throws IOException , SAXException, NullPointerException, FileNotFoundException, EmptyFileException,
             TikaException;
 }
 

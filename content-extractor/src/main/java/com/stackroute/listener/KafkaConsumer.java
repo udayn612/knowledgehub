@@ -1,5 +1,6 @@
 package com.stackroute.listener;
 
+import com.stackroute.domain.FileUrl;
 import com.stackroute.domain.PdfDocument;
 import com.stackroute.exception.EmptyFileException;
 import com.stackroute.exception.FileNotFoundException;
@@ -20,6 +21,7 @@ import java.io.IOException;
 public class KafkaConsumer {
 
 
+
     private PdfExtractionService pdfExtractionService;
     private KafkaProducer kafkaProducer;
 
@@ -37,19 +39,25 @@ public class KafkaConsumer {
             TikaException {
         System.out.println("Consumed message: " + message);
 
-        JSONObject object = (JSONObject) JSONValue.parse(message);
+      JSONObject object = (JSONObject) JSONValue.parse(message);
 
 
-        PdfDocument pdfDocument=new PdfDocument(object.get("documentId").toString(),
-                object.get("documentText").toString(),(JSONObject)(object.get("documentMetaData")));
-        System.out.println(pdfDocument.getDocumentId());
-        System.out.println(pdfDocument.getDocumentText());
-        System.out.println(pdfDocument.getDocumentMetaData());
+      FileUrl fileUrl=new FileUrl(object.get("fileUrl").toString());
+        System.out.println(fileUrl.getFileUrl());
 
-        pdfDocument.setDocumentId(pdfDocument.getDocumentId());
-        pdfDocument.setDocumentText(pdfDocument.getDocumentText());
-        pdfDocument.setDocumentMetaData(pdfDocument.getDocumentMetaData());
-        kafkaProducer.postservice();
+
+//        PdfDocument pdfDocument=new PdfDocument(object.get("documentId").toString(),
+//                object.get("documentText").toString(),(JSONObject)(object.get("documentMetaData")));
+//        System.out.println("#########################");
+//        System.out.println(pdfDocument.getDocumentId());
+//        System.out.println(pdfDocument.getDocumentText());
+//        System.out.println(pdfDocument.getDocumentMetaData());
+//        System.out.println("**************************");
+//
+//        pdfDocument.setDocumentId(pdfDocument.getDocumentId());
+//        pdfDocument.setDocumentText(pdfDocument.getDocumentText());
+//        pdfDocument.setDocumentMetaData(pdfDocument.getDocumentMetaData());
+      kafkaProducer.postservice(fileUrl.getFileUrl());
 
 
 //        Paragraph paragraph = new Paragraph(object.get("paragraphId").toString(), object.get("paragraphText").toString(), object.get("documentId").toString());
@@ -60,4 +68,9 @@ public class KafkaConsumer {
 //        paragraphProviderService.setParagraph(paragraph);
 //        kafkaProducer.postservice();
     }
+
+
+
+
+
 }

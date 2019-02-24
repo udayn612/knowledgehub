@@ -56,9 +56,9 @@ public class S3ServiceImpl implements S3Service {
             /* Below code segment is responsible for adding PublicRead permissions
                to the file being uploaded
              */
-//            if (enablePublicReadAccess) {
-//                putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
-//            }
+            if (enablePublicReadAccess) {
+                putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
+            }
             this.amazonS3.putObject(putObjectRequest);
 
             //removing the file created in the server
