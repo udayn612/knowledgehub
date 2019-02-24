@@ -1,0 +1,45 @@
+<mat-toolbar color="primary">
+   <mat-toolbar-row>
+     <a href="#"><span><img src="assets/img/logo.jpg" alt="logo" id="logo"></span></a>
+     <a href="#" id="title" >Knowledge Hub</a>
+     <!-- <button mat-raised-button color="accent" id="loginbutton" (click)="logging()">Login As Admin</button> -->
+   </mat-toolbar-row>
+ </mat-toolbar>
+<body>
+<mat-card-title  *ngIf="isLogin==true">
+Already logged in;
+ </mat-card-title>
+
+     <!-- <mat-card class="bo"> -->
+         <mat-card  *ngIf="isLogin==false">
+    <mat-card-title>Login</mat-card-title>
+    
+    <!-- Matcard foe username and password -->
+<mat-card  class="my-card">
+   <mat-card-content>
+      <form class="my-form" name="form">
+        <mat-form-field >
+            <mat-label>Username</mat-label><br>
+            <input  matInput  placeholder="username" [formControl]="username" required>
+         </mat-form-field><br>
+         <mat-form-field >
+            <mat-label>Password</mat-label>
+            <input  matInput  type="password" placeholder="Password" [formControl]="password" required>
+         </mat-form-field><br>
+      
+      <mat-toolbar class="warn"  *ngIf="this.isLoginFailed == true">
+            Invalid Credentials
+        </mat-toolbar>
+    </form><br>
+   </mat-card-content>
+  
+   <mat-card-actions>
+      <button mat-raised-button (click)="validate()" color="primary">LOGIN</button>   
+   </mat-card-actions>
+</mat-card> 
+<!-- </mat-card> -->
+</mat-card>
+</body> 
+
+
+

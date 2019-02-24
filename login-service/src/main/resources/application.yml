@@ -1,0 +1,34 @@
+knowledgehub:
+    jwtExpiration: 86400
+    jwtSecret: jwtSecretKey
+server:
+    port: 8083
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: root123
+        url: jdbc:mysql://localhost:3306/LoginDB?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+        username: root
+    jpa:
+        generate-ddl: true
+        hibernate:
+            ddl-auto: create
+            show-sql: true
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQL5Dialect
+    application:
+        name: login-service
+    cloud:
+        config:
+            uri: http://localhost:8888
+#eureka:
+#    instance:
+#        leaseRenewalIntervalInSeconds: 1
+#        leaseExpirationDurationInSeconds: 2
+#    client:
+#        serviceUrl:
+#            defaultZone: http://127.0.0.1:9091/eureka/
+#        lease:
+#            duration: 5
+

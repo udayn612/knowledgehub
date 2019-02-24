@@ -1,0 +1,11 @@
+<span id="sbutton">
+  <mat-toolbar>
+      <form #form #gSearch method="GET" id="gSearch" action="https://www.google.com/search">
+          <div id="voicesearch">
+              <input #searchKey name="q" id="searchKey" type="search" placeholder=" Ask a question">
+              <img src="assets/img/mic.png" alt="mic" (click)="voiceSearch()" id="mic">
+              <button mat-stroked-button color="default" type="submit" id="searchbutton" (click)="form.submit()" >Search</button>
+          </div>
+  </form>
+  </mat-toolbar>
+</span>

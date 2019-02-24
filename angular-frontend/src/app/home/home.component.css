@@ -1,0 +1,20 @@
+#logo{
+    margin-top:2px;
+    height:55px; 
+    width:60px;
+}
+#title{
+    margin-left:500px;
+    text-decoration: none;
+    color:inherit;
+}
+#title a:hover{
+    text-decoration: none;
+}
+#loginbutton{
+    margin-left: 420px;
+}
+.navbar{
+    background-color: blueviolet;
+}
+

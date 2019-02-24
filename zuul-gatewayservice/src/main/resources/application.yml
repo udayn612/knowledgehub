@@ -1,0 +1,14 @@
+knowledgehub:
+    jwtExpiration: 86400
+    jwtSecret: jwtSecretKey
+server:
+    port: 8092
+spring:
+    application:
+        name: api-gateway
+zuul:
+    routes:
+        login-service:
+            url: http://localhost:8083
+    sensitiveHeaders:
+

@@ -1,0 +1,32 @@
+#sbutton{
+    margin-left:700px;
+    display: inline;
+}
+
+#searchbutton{
+    height:35px;
+    margin-left: 2px;
+    margin-top:0px;
+}
+
+#searchbutton:hover{
+    color:inherit;
+}
+
+#mic{
+    margin-top:0px;
+    height:45px;
+    width:45px;
+    margin-left:2px;
+}
+
+#searchKey{
+    margin-top:150px;
+    margin-left:370px;
+    height:35px;
+    width:500px;
+}
+
+#gSearch{
+    margin-top:300px;
+}
