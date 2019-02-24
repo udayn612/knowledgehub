@@ -1,27 +1,27 @@
 version: "2"
 services:
 
-  apigateway:
-    image: zuul-service
-    build: zuul-gatewayservice/
-    restart: always
-    network_mode: host
-    depends_on:
-    - eurekaserver
-    ports:
-    - 8092:8092
-    expose:
-    - 8092
-
-  eurekaserver:
-    image: eureka-servcie:latest
-    build: eureka-server/
-    restart: always
-    network_mode: host
-    ports:
-    - 9091:9091
-    expose:
-    - 9091
+#  apigateway:
+#    image: zuul-service
+#    build: zuul-gatewayservice/
+#    restart: always
+#    network_mode: host
+#    depends_on:
+#    - eurekaserver
+#    ports:
+#    - 8092:8092
+#    expose:
+#    - 8092
+#
+#  eurekaserver:
+#    image: eureka-servcie:latest
+#    build: eureka-server/
+#    restart: always
+#    network_mode: host
+#    ports:
+#    - 9091:9091
+#    expose:
+#    - 9091
 
 #  configserver:
 #      image: config-servcie:latest
@@ -33,53 +33,63 @@ services:
 #      expose:
 #      - 8888
 
-  mysqldb:
-    image: mysql:5.7
-    restart: always
-    container_name: mysql-container
-    network_mode: "host"
-    hostname: localhost
-    environment:
-      MYSQL_ROOT_PASSWORD: root123
-      MYSQL_DATABASE: LoginDB
-#      MYSQL_USER: root
-      MYSQL_PASSWORD: root123
-#    volumes:
-#      - /DB/mysql:/var/lib/mysql
-    ports:
-      - 3306:3306
+#  mysqldb:
+#    image: mysql:5.7
+#    restart: always
+#    container_name: mysql-container
+#    network_mode: "host"
+#    hostname: localhost
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root123
+#      MYSQL_DATABASE: LoginDB
+##      MYSQL_USER: root
+#      MYSQL_PASSWORD: root123
+##    volumes:
+##      - /DB/mysql:/var/lib/mysql
+#    ports:
+#      - 3306:3306
 
-
-
-  loginservice:
-    image: login-service:latest
-    build: login-service/
-    restart: always
-    network_mode: "host"
-    hostname: localhost
-    depends_on:
-      - mysqldb
-      - eurekaserver
-    ports:
-    - 8083:8083
-    expose:
-    - 8083
-
-  angular-app:
-    build: angular/
-    image: angular
-    restart: always
-    mem_limit: 1024m
-    container_name: Angular
-    network_mode: "host"
+  neo4j:
+    image: neo4j:3.0
+    container_name: neo4j
+    network_mode: host
     hostname: localhost
     ports:
-      - 8081:8081
-    expose:
-      - 8081
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - $PWD/plugins:/plugins
+      - $PWD/import:/import
+
+#  loginservice:
+#    image: login-service:latest
+#    build: login-service/
+#    restart: always
+#    network_mode: "host"
+#    hostname: localhost
+#    depends_on:
+#      - mysqldb
+#      - eurekaserver
+#    ports:
+#    - 8083:8083
+#    expose:
+#    - 8083
+
+#  angular-app:
+#    build: angular/
+#    image: angular
+#    restart: always
+#    mem_limit: 1024m
+#    container_name: Angular
+#    network_mode: "host"
+#    hostname: localhost
+#    ports:
+#      - 8081:8081
+#    expose:
+#      - 8081
 
   zookeeper:
-    image: wurstmeister/zookeeper
+    image: landoop/fast-data-dev
     ports:
       - "2181:2181"
     mem_limit: 1024m
@@ -90,8 +100,31 @@ services:
     container_name: zookeeper
     hostname: localhost
     restart: always
-    healthcheck:
-     test: "exit 0"
+#    healthcheck:
+#     test: "exit 0"
+
+  kafka:
+    image: landoop/fast-data-dev
+    ports:
+      - "9092:9092"
+    container_name: kafka
+    mem_limit: 1500m
+    environment:
+      JAVA_OPTS: "-XX:+UnlockExperimentalVMOptions
+                   -XX:+UseCGroupMemoryLimitForHeap"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_ZOOKEEPER_CONNECT: localhost:2181
+      KAFKA_CREATE_TOPICS: "FileUrl:1:1, FileText:1:1, ParagraphContents:1:1,
+        AnayticsResults:1:1"
+    network_mode: "host"
+    hostname: localhost
+    depends_on:
+     - zookeeper
+#        condition: service_healthy
+    restart: always
+#    healthcheck:
+#      test: "exit 0"
 
   document-provider:
     image: document-provider:latest
@@ -100,11 +133,71 @@ services:
     network_mode: "host"
     hostname: localhost
     depends_on:
-      -
-      - eurekaserver
+      - zookeeper
+      - kafka
     ports:
       - 8083:8083
     expose:
       - 8083
 
+  content-extractor:
+    image: content-extractor:latest
+    build: content-extractor/
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    depends_on:
+      - zookeeper
+      - kafka
+      - document-provider
+    ports:
+      - 8086:8086
+    expose:
+      - 8086
 
+  paragraph-tokenizer:
+    image: paragraph-tokenizer:latest
+    build: paragraph-tokenizer/
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    depends_on:
+      - zookeeper
+      - kafka
+      - content-extractor
+    ports:
+      - 8090:8090
+    expose:
+      - 8090
+
+  analytic-server:
+    image: analytic-server:latest
+    build: analytic-server/
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    depends_on:
+      - zookeeper
+      - kafka
+      - neo4j
+      - paragraph-tokenizer
+    ports:
+      - 8085:8085
+    expose:
+      - 8085
+
+  knowledge-indexer:
+    image: knowledge-indexer:latest
+    build: knowledge-indexer/
+    restart: always
+    network_mode: "host"
+    hostname: localhost
+    depends_on:
+      - zookeeper
+      - kafka
+      - neo4j
+      - analytic-server
+    ports:
+      - 8088:8088
+    expose:
+      - 8088

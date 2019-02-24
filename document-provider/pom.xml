@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.stackroute</groupId>
-	<artifactId>amazon-s3</artifactId>
+	<artifactId>document-provider</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>amazon-s3</name>
+	<name>document-provider</name>
 	<description>project for storing files in amazon storage</description>
 
 	<properties>

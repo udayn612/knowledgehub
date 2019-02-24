@@ -34,7 +34,7 @@ public class KafkaConsumer {
 //    private KafkaTemplate<String, Paragraph> kafkaTemplate;
 
     //  private static final String TOPIC = "Kafka_Example2";
-    @KafkaListener(topics = "File_url", groupId = "group_id")
+    @KafkaListener(topics = "FileUrl", groupId = "group_id")
     public void consume(String message)throws IOException, SAXException, NullPointerException, FileNotFoundException, EmptyFileException,
             TikaException {
         System.out.println("Consumed message: " + message);

@@ -45,7 +45,7 @@ public class UploadFileController {
     @Autowired
     private KafkaTemplate<String,FileUrl> kafkaTemplate;
 
-    private static final String TOPIC = "File_url";
+    private static final String TOPIC = "FileUrl";
 
     FileUrl fileUrl;
 

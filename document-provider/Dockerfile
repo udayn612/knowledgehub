@@ -1,6 +1,6 @@
 FROM openjdk:11
-ADD ./target/amazon-s3-0.0.1-SNAPSHOT.jar /usr/src/amazon-s3-0.0.1-SNAPSHOT.jar
-EXPOSE 8080
+ADD ./target/document-provider-0.0.1-SNAPSHOT.jar /usr/src/document-provider-0.0.1-SNAPSHOT.jar
+EXPOSE 8087
 WORKDIR usr/src
-ENTRYPOINT ["java","-jar","amazon-s3-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar","document-provider-0.0.1-SNAPSHOT.jar"]
 
